@@ -1,0 +1,108 @@
+﻿<Window x:Class="Course_project.ResultView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Course_project"
+        mc:Ignorable="d"
+        Title="Результаты" Height="492.155" Width="800"
+          WindowState="Maximized">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
+           <!-- <RowDefinition Height="0.1*"/>-->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition Width="0.8*"/>
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Grid.Column="0" Grid.Row="0">
+            <StackPanel>
+                <StackPanel>
+                    <Label>Группа:</Label>
+                    <TextBox DataContext="{Binding GroupSort}" Text="{Binding Path=Group_User , Mode=TwoWay}"></TextBox>
+                </StackPanel>
+                <Button  Command="{Binding SortByGroupCommand}" Height="34" ToolTip="Сортировка учащихся по
+                         группе обучение">Сортировка</Button>
+                <Button  Command="{Binding ShowResultCommand}" Height="33" ToolTip="Выбор всех результатов
+                         текущего студента">Все результаты</Button>
+                <Button  Command="{Binding ShowResultTestCommand}" Height="33" ToolTip="Выбор всех результатов
+                         текущего студента">Результаты группы</Button>
+            </StackPanel>
+        </GroupBox>
+
+      
+        
+        
+        
+        <GroupBox Header="Студенты:" Grid.Column="1" Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <DataGrid ItemsSource="{Binding DataResultsFull }" SelectedItem="{Binding SelectedStudent}"
+                      AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
+    RowBackground="LightGray" AlternatingRowBackground="White">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn  IsReadOnly="True" Header="Логин" Binding="{Binding Path=Login_User , Mode=TwoWay}" />
+                        <DataGridTextColumn IsReadOnly="True"  Header="Имя" Binding="{Binding Path=FirstName_User , Mode=TwoWay}" />
+                        <DataGridTextColumn  IsReadOnly="True" Header="Фамилия" Binding="{Binding Path=LastName_User , Mode=TwoWay}" />
+                        <DataGridTextColumn  IsReadOnly="True" Header="Результат" Binding="{Binding Path=Score_Result , Mode=TwoWay}" />
+                        <DataGridTextColumn  IsReadOnly="True" Header="Тест" Binding="{Binding Path=Name_Test , Mode=TwoWay}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <DataGrid ItemsSource="{Binding TestsDB}" SelectedItem="{Binding SelectedTest}"
+                      AutoGenerateColumns="False"  AlternatingRowBackground="White"  Margin="30,0,0,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn IsReadOnly="True" 
+                            Header="Тест" Binding="{Binding Path=Name_Test , Mode=TwoWay}" />
+                        <DataGridTextColumn IsReadOnly="True"
+                            Header="Тема теста" Binding="{Binding Path=Property.Description_Property , Mode=TwoWay}" />
+                        <DataGridTextColumn IsReadOnly="True"
+                            Header="Кол-во вопросов" Binding="{Binding Path=Questions_Number, Mode=TwoWay}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Статистика сдачи тестов:" Grid.Column="1" Grid.Row="1">
+            <DataGrid ItemsSource="{Binding SelectedResults }"  SelectedItem ="{Binding 
+                SelectedResult}"
+                      AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn IsReadOnly="True" Header="Тест" Binding="{Binding Path=Name_Test , Mode=TwoWay}" />
+                    <DataGridTextColumn IsReadOnly="True" Header="Результат" Binding="{Binding Path=Score_Result , Mode=TwoWay}" />
+                    <DataGridTextColumn IsReadOnly="False" Header="Рекомендации" Binding="{Binding Path=Description_Result , Mode=TwoWay}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+
+        <GroupBox Grid.Column="0" Grid.Row="1" Header="Выдача разрешения на новый тест">
+            <StackPanel Orientation="Vertical" >
+                <WrapPanel Orientation="Horizontal"  DataContext="{Binding SelectedStudent}">
+                    <Label>Студент:</Label>
+                    <Label  Content="{Binding FirstName_User}"></Label>
+                    <Label Content="{Binding LastName_User}"></Label>
+                    <Label>Группа:</Label>
+                    <Label Content="{Binding Group_User}"></Label>
+                </WrapPanel>
+                <WrapPanel Orientation="Horizontal" DataContext="{Binding SelectedTest}">
+                    <Label>Новый тест для прохождения: </Label>
+                    <Label  Content="{Binding Name_Test , Mode=TwoWay}"></Label>
+                </WrapPanel>
+                <WrapPanel Orientation="Horizontal" DataContext="{Binding SelectedStudent}">
+                    <Label>Пометка для разрешения:</Label>
+                    <TextBox Text="{Binding Description_Result}"></TextBox>
+                </WrapPanel>
+                <Button Height="36" Command="{Binding AddPermissionCommand }">Добавить доступ </Button>
+                <Button Height="36" Command="{Binding RemovePermissionCommand}">Снять доступ </Button>
+                <Button Height="36" Command="{Binding AddGroupPremissionCommand}">Доступ всей группе</Button>
+            </StackPanel>
+        </GroupBox>
+      
+     
+   
+
+    </Grid>
+</Window>

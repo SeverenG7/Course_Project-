@@ -1,0 +1,44 @@
+﻿<Window x:Class="Course_project.Register"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Course_project"
+        mc:Ignorable="d"
+        Title="Регистрация" Height="400" Width="300"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+
+    </Window.Resources>
+    <Grid Margin="0,-12,0,0">
+
+        <GroupBox VerticalAlignment="Center" Header="Регистрация" Height="369" Margin="0,12,0,0" >
+            <GroupBox.Resources>
+                <Style  TargetType="WrapPanel">
+                    <Setter Property="Orientation" Value="Vertical"/>
+                    <Setter Property="TextBox.Width" Value="150"/>
+                </Style>
+            </GroupBox.Resources>
+            <WrapPanel>
+                <Label>Имя</Label>
+                <TextBox DataContext="{Binding AddingUserInfo}"
+                                              Text="{Binding Path = FirstName_User, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                <Label >Фамилия</Label>
+                <TextBox DataContext="{Binding AddingUserInfo}"
+                         Text="{Binding Path = LastName_User, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <Label>Номер группы</Label>
+                <TextBox DataContext="{Binding AddingUserInfo}"
+                         Text="{Binding Path = Group_User, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <WrapPanel>
+                    <Label >Логин</Label>
+                    <TextBox DataContext="{Binding AddingUser}"  Text="{Binding Path=Login_User, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150"></TextBox>
+                    <Label>Пароль</Label>
+                    <TextBox DataContext="{Binding AddingUser}" Text="{Binding Path=Password_User, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </WrapPanel>
+                <Button Content="Регистрация" Width="75" Margin="0,10,0,0" 
+                        Command="{Binding AddUser}">
+                </Button>
+            </WrapPanel>
+        </GroupBox>
+    </Grid>
+</Window>

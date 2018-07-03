@@ -1,0 +1,84 @@
+﻿<Window x:Class="Course_project.QuestionView"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Course_project"
+        mc:Ignorable="d"
+        Title="Конструктор вопросов" Height="500" Width="400"
+        WindowStartupLocation="CenterScreen"
+          WindowState="Maximized">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+
+        </Grid.ColumnDefinitions>
+
+
+        <GroupBox x:Name="QuestionSetting">
+            <StackPanel x:Name="QuestionConstructor" Grid.Row="1" Grid.Column="0">
+                <StackPanel Orientation="Horizontal">
+                    <WrapPanel Orientation="Vertical" Width="191">
+                        <Label>Тип вопроса :</Label>
+
+                    </WrapPanel>
+                    <WrapPanel Orientation="Vertical">
+                        <ComboBox  ItemsSource="{Binding Properties}"
+                                 SelectedItem="{Binding SelectedProperty}" Margin="0,5" Width="150" Height="20">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Description_Property, Mode=TwoWay}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </WrapPanel>
+                </StackPanel>
+
+
+
+
+                <Label >Введите текст вопроса:</Label>
+
+                <TextBox MaxLength="200" Height="60" 
+                          TextWrapping="Wrap" 
+                         AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                         DataContext="{Binding UpdatingQuestion}" Text="{Binding Path=Text_Question , Mode=TwoWay}">
+                </TextBox>
+                <StackPanel>
+                    <Button ToolTip="Удаление варианта ответа" Command="{Binding RemoveAnswerCommand}" Height="30"
+                            Width="30" HorizontalAlignment="Left">
+                        <Image Source="Resource/minus.png" />
+                    </Button>
+                    <DataGrid ItemsSource="{Binding Answers}" SelectedItem="{Binding SelectedAnswer}"
+                      AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
+    RowBackground="LightGray" AlternatingRowBackground="White">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Текст ответа" Binding="{Binding Text_Answer, Mode=TwoWay}" />
+                            <DataGridCheckBoxColumn Header="Верно/Неверно" Binding="{Binding Correct, Mode=TwoWay}" />
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <Button Width="200" Margin="5" Command="{Binding UpdateQuestionCommand}" >Сохранить вопрос</Button>
+                    <Button Width="200" Margin="5" Command="{Binding AddPictureCommand}" >Добавить картинку</Button>
+                    <Button Width="200" Margin="5" Command="{Binding RemovePictureCommand}" >Удалить картинку</Button>
+                </StackPanel>
+                <Image  Height ="200" Width="200" Source="{Binding Image_Picture, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+
+        </GroupBox>
+
+    </Grid>
+</Window>
+
+
+

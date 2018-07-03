@@ -1,0 +1,333 @@
+﻿<Window x:Class="Course_project.AdminWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Course_project"
+        mc:Ignorable="d"
+        Title="Конструктор тестов"        
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow"
+        BorderBrush="Black">
+
+
+
+
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+
+
+
+        <StackPanel x:Name="MainPanel" Orientation="Vertical" FlowDirection="LeftToRight" Grid.Row="0" Grid.Column="0">
+
+            <Menu x:Name="Main_Menu" Height="51" VerticalAlignment="Top">
+                <Menu.Resources>
+                    <Style TargetType="{x:Type MenuItem}">
+                        <Setter Property="FontSize" Value="15"/>
+                        <Setter Property="FontFamily" Value="Verdana"/>
+                    </Style>
+                </Menu.Resources>
+                <MenuItem x:Name="Create" Header="Создание вопросов" Height="51" Width="170" 
+                          Command="{Binding ConstructorQuestionsCommand}">
+                </MenuItem>
+                <MenuItem x:Name="Results"  Header="Результаты" Width="159.99" Command="{Binding ResultCommand}" >
+                </MenuItem>
+                <MenuItem x:Name="About" Command="{Binding  AboutAppCommand}" Header="О приложении" Width="159.743"/>
+            </Menu>
+        </StackPanel>
+
+
+        <Grid x:Name="CommonGrid" Grid.Row="1" Grid.Column="0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.17*"/>
+                <RowDefinition Height="0.34*"/>
+                <RowDefinition Height="0.51*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.50*"/>
+                <ColumnDefinition Width="0.50*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Поиск теста " Grid.Row="0" Grid.Column="0" Margin="0,0,0,126" Grid.RowSpan="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel x:Name="TestSearch"  Grid.Column="0" Height="78" VerticalAlignment="Top">
+                        <StackPanel Orientation="Vertical">
+                       
+                                <Label>Тип теста:</Label>
+                        
+                            <WrapPanel Orientation="Vertical">
+                                <ComboBox  ItemsSource="{Binding Properties}"
+                                 SelectedItem="{Binding  PropertyTestSearch}"  Width="142" Height="20" >
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Description_Property, Mode=TwoWay}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button HorizontalAlignment="Center" Margin="0,10,0,0"
+                                        Command="{Binding SearchTestsCommand}"
+                               Content="Поиск"  Width="55" />
+                            </WrapPanel>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1">
+                        
+
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+            <GroupBox x:Name="CurrentTests" Grid.Row="1" Grid.Column="0" Header="Тесты:" Margin="0,10,0,0">
+                <StackPanel CanVerticallyScroll="True">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Height" Value="25"/>
+                            <Setter Property="Width" Value="25"/>
+
+
+                        </Style>
+                    </StackPanel.Resources>
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock Width="170" Height="19">
+                                Панель инструментов:
+                        </TextBlock>
+                        <Button ToolTip="Удаление теста" Command="{Binding RemoveTestFromDBCommand}">
+                            <Image Source="Resource/minus.png" />
+                        </Button>
+                        <Button ToolTip="Редактирование теста" Command="{Binding EditSelectedTestCommand}">
+                            <Image Source="Resource/edit.png"/>
+                        </Button>
+                        <Button ToolTip="Обновление теста" Command="{Binding RefreshTestCommand}">
+                            <Image Source="Resource/refresh.png" />
+                        </Button>
+                    </WrapPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="0" CanVerticallyScroll="True">
+
+         
+
+                        <ListBox  ItemsSource="{Binding TestsDB}"
+                 SelectedItem="{Binding SelectedTest}" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                       MaxHeight="150">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" >
+                                        <TextBlock Text="{Binding Path=Name_Test}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+
+                </StackPanel>
+
+            </GroupBox>
+
+            <!--Текущий тест в первой колонке сетки-->
+            <GroupBox Header="Текущий тест : " Grid.Row="2" Grid.Column="0" >
+                <ScrollViewer>
+                    <StackPanel x:Name="TestView"  Height="auto" CanVerticallyScroll="True">
+                        <DataGrid ItemsSource="{Binding TestQuestions }" SelectedItem="{Binding SelectedQuestion}"
+                      AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
+    RowBackground="LightGray" AlternatingRowBackground="White" CanUserAddRows="False" CanUserDeleteRows="False" 
+                                  CanUserReorderColumns="False" > 
+                            <DataGrid.Columns>
+                                <DataGridTextColumn IsReadOnly="True"
+                                                    Header="Текст вопроса" 
+                                                    Binding="{Binding Path=Text_Question , Mode=TwoWay}" />
+                                <DataGridTextColumn IsReadOnly="True" 
+                                                    Header="Кол-во вариантов ответа "
+                                                    Binding="{Binding Path=Number_Variant , Mode=TwoWay}" />
+                                <DataGridTextColumn  IsReadOnly="True"
+                                                     Header="Тип вопроса"
+                                                     Binding="{Binding Property.Description_Property , Mode=TwoWay}" />
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Command="{Binding AddTestCommand}"  Content="Добавить тест в базу" Width="135"/>
+                            <Button Height="25" Width="22" Background="WhiteSmoke"
+                            ToolTip="Удаление вопроса из теста" Command="{Binding RemoveQuestionFromTestCommand}" 
+                                HorizontalAlignment="Left">
+                                <Image Source="Resource/minus.png" />
+                            </Button>
+                        </StackPanel>
+
+                    </StackPanel>
+                </ScrollViewer>
+
+
+            </GroupBox>
+
+
+
+            <!--Конструктор тестов и вопросов -->
+            <!--Границы управляющих блоков-->
+
+
+
+
+
+            <Grid x:Name="RightGrid"  Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.25*"/>
+                    <RowDefinition Height="0.26*"/>
+                    <RowDefinition Height="0.51*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+
+                <GroupBox Grid.Row="0" Header="Параметры теста :" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                        </Grid.ColumnDefinitions>
+              
+               
+                            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                            <WrapPanel Orientation="Vertical" Width="191">
+                                <Label>Имя теста :</Label>
+                                <Label Margin="0,15,0,0">Тип теста :</Label>
+                                <Label Margin="0,15,0,0">Количество вопросов :</Label>
+                            </WrapPanel>
+                            <WrapPanel Orientation="Vertical">
+                                <TextBox DataContext="{Binding AddingTest}"
+                                         Text="{Binding Name_Test}" Width="150" Height="40" ></TextBox>
+                                <ComboBox  ItemsSource="{Binding Properties}"
+                                 SelectedItem="{Binding PropertyTestSelected}" Margin="0,5" Width="150" Height="20">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Description_Property, Mode=TwoWay}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+
+                                <TextBox DataContext="{Binding AddingTest}" 
+                                         Text="{Binding Questions_Number}" Margin="0,5" Width="150"  Height="37"></TextBox>
+                            </WrapPanel>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"  Orientation="Vertical">
+                            <Button HorizontalAlignment="Left" 
+                                    Command="{Binding TestParamsCommand}" Margin="15,5,0,0" Height="26"
+                                    Width="200">Задать параметры</Button>
+                            <Button HorizontalAlignment="Left"  
+                                Command="{Binding GenerateTestCommand}" Margin="15,5,0,0" Height="26" 
+                                    Width="200" Content="Автогенерация"/>
+                            <Button HorizontalAlignment="Left"  
+                                Command="{Binding GenerateGroupTestCommand}" Margin="15,5,0,0" Height="26" 
+                                    Width="200" Content="Генерация группы тестов "/>
+                        </StackPanel>
+              
+                    </Grid>
+                </GroupBox>
+
+
+                <GroupBox Header="Тонкая настройка параметров вопросов теста :" Grid.Column="0" Grid.Row="1">
+                    <StackPanel x:Name="QuestionConstructor" Grid.Row="1" Grid.Column="0">
+                        <StackPanel Orientation="Horizontal">
+                            <WrapPanel Orientation="Vertical" Width="191">
+                                <Label>Тип вопроса :</Label>
+                                <Label>Кол-во вариантов ответа:</Label>
+                                <Label Height="25">Кол-во правильных ответов:</Label>
+                            </WrapPanel>
+                            <WrapPanel Orientation="Vertical">
+                                <ComboBox  ItemsSource="{Binding Properties}"
+                                 SelectedItem="{Binding  PropertyQuestionSelected}"  Width="150" Height="20">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Description_Property, Mode=TwoWay}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <ComboBox  ItemsSource="{Binding Number_Answers}"
+                                 SelectedItem="{Binding SelectedNumberAnswers}" Margin="0,5" Width="150" Height="20"></ComboBox>
+
+                                <ComboBox  ItemsSource="{Binding Number_Answers}"
+                                 SelectedItem="{Binding SelectedCorrectAnswers}" Margin="0,3" Width="150" Height="20"></ComboBox>
+
+
+
+                            </WrapPanel>
+                        </StackPanel>
+                        <Button HorizontalAlignment="Center" Command="{Binding SearchQuestionsCommand}"
+                               Content="Поиск" Margin="165,10,169,0" Width="55" />
+                    </StackPanel>
+
+                </GroupBox>
+
+
+                <GroupBox x:Name="CurrentQuestions" Grid.Row="2" Grid.Column="0" Header="Вопросы с заданными параметрами:" >
+                    <StackPanel CanVerticallyScroll="True">
+                        <StackPanel.Resources>
+                            <Style TargetType="Button">
+                                <Setter Property="Height" Value="25"/>
+                                <Setter Property="Width" Value="25"/>
+
+
+                            </Style>
+                        </StackPanel.Resources>
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock Width="170" Height="19">
+                                Панель инструментов:
+                            </TextBlock>
+                            <Button  ToolTip="Добавление вопроса в текущий тест" Command="{Binding AddQuestionToTestCommand}">
+                                <Image Source="Resource/plus.png" />
+                            </Button>
+                            <Button ToolTip="Удаление вопроса" Command="{Binding RemoveQuestionFromDBCommand}">
+                                <Image Source="Resource/minus.png" />
+                            </Button>
+                            <Button ToolTip="Редактирование вопроса" Command="{Binding UpdateQuestionCommand}">
+                                <Image Source="Resource/edit.png"/>
+                            </Button>
+                        </WrapPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="0" CanVerticallyScroll="True">
+                            <ListBox  ItemsSource="{Binding Questions}"
+                 SelectedItem="{Binding SelectedQuestion}" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                       MaxHeight="250">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" >
+                                            <TextBlock Text="{Binding Path=Text_Question}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+
+
+                    </StackPanel>
+                </GroupBox>
+
+
+            </Grid>
+
+        </Grid>
+
+
+    </Grid>
+</Window>
+
+

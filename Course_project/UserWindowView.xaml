@@ -1,0 +1,151 @@
+﻿<Window x:Class="Course_project.UserWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Course_project"
+        mc:Ignorable="d"
+        Title="Прохождение тестов" Height="700" Width="900"
+        WindowStartupLocation="CenterScreen"
+          WindowState="Maximized">
+    <Window.Resources>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.4*"  />
+            <RowDefinition Height="0.6*" />
+     
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.7*"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="0.45*"/>
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Grid.Column="0" Grid.Row="0" Header="Ваши последние результаты:">
+            <ScrollViewer>
+                <StackPanel  Height="auto" CanVerticallyScroll="True">
+                    <DataGrid ItemsSource="{Binding EndedResults }" SelectedItem="{Binding SelectedResult}"
+                      AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
+    RowBackground="LightGray" AlternatingRowBackground="White" 
+                              CanUserAddRows="False" CanUserDeleteRows="False" 
+                                  CanUserReorderColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                IsReadOnly="True" Header="Тест : " Binding="{Binding Path=Name_Test , Mode=TwoWay}" />
+                            <DataGridTextColumn  IsReadOnly="True" 
+                                                 Header="Результат: " Binding="{Binding Path=Score_Result , Mode=TwoWay}" />
+                            <DataGridTextColumn IsReadOnly="True"
+                                                Header="Результат: " Binding="{Binding Path=Description_Result , Mode=TwoWay}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                   
+                </StackPanel> 
+            </ScrollViewer>
+
+        </GroupBox>
+        
+        
+        <GroupBox Grid.Column="1" Grid.Row="0" Header="Ваши текущие тесты: ">
+            <StackPanel CanVerticallyScroll="True" RenderTransformOrigin="0.502,0.676">
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Height" Value="25"/>
+                        <Setter Property="Width" Value="25"/>
+                        <Setter Property="Background" Value="Wheat"/>
+
+                    </Style>
+                </StackPanel.Resources>
+                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Width="170" Height="19">
+                                Начать тест:
+                    </TextBlock>
+                    <Button  ToolTip="Начать тест" Command="{Binding StartTestCommand}">
+                        <Image Source="Resource/start.png" />
+                    </Button>
+                </WrapPanel>
+
+                <StackPanel  CanVerticallyScroll="True">
+                    <ListBox  ItemsSource="{Binding CurrentTests}"
+                 SelectedItem="{Binding SelectedTest}" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                       MaxHeight="100">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" >
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Path=Name_Test}" />
+                                       
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                
+
+            </StackPanel>
+        </GroupBox>
+
+
+        <GroupBox Grid.Row="1"  Grid.ColumnSpan="3"
+                  Header="{Binding SelectedTest.Name_Test }">
+
+
+       
+                <ScrollViewer>
+                <StackPanel CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True"  ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    <ListBox  ItemsSource="{Binding TestQuestions}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel >
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=Text_Question}" HorizontalAlignment="Right" />
+                                        <Image  
+                                               Source="{Binding  Path= Picture}"/>
+                                    </StackPanel>
+                                    <ListBox  ItemsSource="{Binding Answers}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel >
+                                                    <TextBlock Text="{Binding Path=Text_Answer}" />
+                                                    <CheckBox IsChecked="{Binding Path=Correct , Mode=TwoWay}"></CheckBox>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button Command="{Binding EndTestCommand}" Height="32">Закончить тест</Button>
+                </StackPanel>
+            </ScrollViewer>
+       
+   
+            
+        </GroupBox>
+
+
+        <GroupBox Grid.Column="3" Grid.Row="0" Header="Вы вошли как:" DataContext="{Binding User}">
+            <StackPanel Orientation="Vertical">
+                <WrapPanel Orientation="Horizontal">
+                    <Label> Логин: </Label>
+                    <Label  Content="{Binding Login_User}"></Label>
+                </WrapPanel>
+                <WrapPanel Orientation="Horizontal">
+                    <Label>Студент:</Label>
+                    <Label Content="{Binding FirstName_User}"> </Label>
+                    <Label Content="{Binding LastName_User}"></Label>
+                </WrapPanel>
+                <WrapPanel Orientation="Horizontal">
+                    <Label>Группа:</Label>
+                    <Label Content="{Binding Group_User}"></Label>
+                </WrapPanel>
+            </StackPanel>
+            
+        </GroupBox>
+        
+        
+    </Grid>
+</Window>

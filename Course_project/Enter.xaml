@@ -1,0 +1,33 @@
+﻿<Window x:Class="Course_project.Enter"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Course_project"
+        mc:Ignorable="d"
+        Height="250" Width="300"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+       >
+
+    <Grid>
+
+
+
+        <GroupBox  Header="Вход">
+            <GroupBox.Resources>
+
+            </GroupBox.Resources>
+            <WrapPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBox x:Name="Login"
+                    DataContext="{Binding AddingUser}" Text="{Binding Path=Login_User, 
+                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" Margin="5"></TextBox>
+                <PasswordBox x:Name="Password"
+                    DataContext="{Binding AddingUser}"  Width="150" Margin="5"  />
+                <Button Width="100" Margin="5" Command="{Binding EnterSystem}" Focusable="True" Click="Enter_System">Войти</Button>
+                <Button Width="100" Margin="5" Command="{Binding GoToRegisterWindow}" >Регистрация</Button>
+            </WrapPanel>
+        </GroupBox>
+
+    </Grid>
+</Window>
